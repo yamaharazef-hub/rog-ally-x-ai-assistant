@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b18">
+  <meta name="description" content="R — a local AI assistant for the ROG Ally X running Bazzite OS.">
+  <title>R • ROG Ally X AI Assistant</title>
+  <link rel="icon" href="__AVATAR_DATA_URI__">
+  <style>
+/*__INLINE_CSS__*/
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">R</div>
+        <div>
+          <div class="brand-title">R • ROG Ally X Assistant</div>
+          <div class="brand-sub">Bazzite OS / Guarded System Control</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="brainBadge" class="badge">CONNECTING…</span>
+        <button id="arenaBtn" class="btn-ghost" type="button" title="Open Arena Agent and copy your last prompt">
+          <span aria-hidden="true">✦</span><span> Arena Agent</span>
+        </button>
+        <button id="settingsBtn" class="btn-icon" type="button" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="warningBanner" class="warning hidden" role="status"></div>
+
+    <main class="grid">
+      <section class="hero card" aria-label="Assistant avatar and voice control">
+        <div id="avatarStage" class="avatar-stage">
+          <div class="halo" aria-hidden="true"></div>
+          <img src="__AVATAR_DATA_URI__" alt="R, a friendly white and blue robot avatar">
+        </div>
+        <div class="status-line"><span id="statusDot" class="dot"></span><span id="statusText">R is online</span></div>
+        <button id="micBtn" class="mic-button" type="button" aria-pressed="false" aria-label="Click to speak">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+            <path d="M5 10a7 7 0 0 0 14 0"></path>
+            <path d="M12 17v4"></path>
+            <path d="M8 21h8"></path>
+          </svg>
+        </button>
+        <p id="micCaption" class="mic-caption">Click &amp; speak</p>
+        <p id="micHint" class="mic-hint">Browser speech selected. Chromium/Edge recommended.</p>
+        <div class="stt-row">
+          <label for="sttMode">Mic engine</label>
+          <select id="sttMode" aria-label="Speech recognition engine">
+            <option value="browser">Browser STT</option>
+            <option value="whisper">Local Whisper</option>
+          </select>
+        </div>
+        <div id="quickActions" class="quick-grid" aria-label="Quick system actions"></div>
+      </section>
+
+      <div class="right-column">
+        <section class="chat card" aria-label="Conversation">
+          <div class="card-head">
+            <div class="card-title">Conversation / terminal replies</div>
+            <div class="card-actions"><button id="clearChat" type="button">CLEAR</button></div>
+          </div>
+          <div id="chatLog" class="chat-log" aria-live="polite"></div>
+        </section>
+        <section class="terminal card" aria-label="Terminal output">
+          <div class="card-head">
+            <div class="card-title">Guarded terminal</div>
+            <div class="card-actions">
+              <button id="exportBtn" type="button">EXPORT</button>
+              <button id="clearTerminal" type="button">CLEAR</button>
+            </div>
+          </div>
+          <div id="terminalLog" class="terminal-log" aria-live="polite"></div>
+        </section>
+      </div>
+    </main>
+
+    <form id="composer" autocomplete="off">
+      <input id="textInput" type="text" maxlength="3000" placeholder="Type a request…  e.g. “open youtube” or “check battery”" aria-label="Message to R">
+      <button id="sendBtn" class="send-btn" type="submit">SEND</button>
+    </form>
+
+    <aside id="settingsPanel" class="settings hidden" aria-label="Assistant settings">
+      <div class="settings-head">
+        <h2>Assistant settings</h2>
+        <button id="closeSettings" class="btn-icon" type="button" aria-label="Close settings">×</button>
+      </div>
+      <div class="settings-grid">
+        <div class="settings-row"><span>Brain</span><code id="settingsBrain">loading</code></div>
+        <div class="settings-row"><span>Permission mode</span><code id="settingsMode">guarded</code></div>
+        <div class="settings-row"><span>Dry-run</span><code id="settingsDryRun">loading</code></div>
+        <div class="settings-row"><span>Mic engine</span><code id="settingsSttMode">Browser STT</code></div>
+        <div class="settings-row"><span>Whisper model</span><code id="settingsWhisper">small.en</code></div>
+        <label class="check"><input id="speakReplies" type="checkbox"> Speak replies aloud</label>
+        <p class="settings-note">Secrets stay in <code>.env</code> on the device. The API key is never sent to this page. System actions are normalized to an allowlist and shown in the terminal panel.</p>
+      </div>
+    </aside>
+
+    <div id="toast" class="toast hidden" role="status"></div>
+  </div>
+  <script>
+/*__INLINE_JS__*/
+  </script>
+</body>
+</html>

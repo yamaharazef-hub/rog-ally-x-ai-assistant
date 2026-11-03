@@ -1,0 +1,35 @@
+# Secrets and machine-local state
+.env
+.env.*
+!.env.example
+session.env
+data/
+*.log
+*.wav
+*.webm
+*.ogg
+*.mp3
+*.m4a
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Generated build/cache directories
+.cache/
+build/
+dist/
+out/
